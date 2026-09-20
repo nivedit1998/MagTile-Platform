@@ -22,8 +22,23 @@ It currently returns an empty content payload:
 }
 ```
 
-The ESP32 can use this endpoint later to fetch personal content and render it on the eInk display.
+The endpoint is protected by the `X-MagTile-Key` request header. The ESP32 sends this header when it fetches personal content.
 
 ## Vercel
 
-Import this repository into Vercel. No build command or environment variables are required for the initial version. Each commit pushed to the connected Git repository can then trigger a deployment.
+Import this repository into Vercel. Create this environment variable in the Vercel project settings:
+
+```text
+Name:  MagTileKey
+Value: your-private-device-key
+```
+
+Add it to the deployment environments you use, then redeploy. The variable name is case-sensitive.
+
+The homepage remains public, but `/api/magtile` returns `401 Unauthorized` unless the request includes the matching header. Test it from PowerShell with:
+
+```powershell
+curl.exe -H "X-MagTile-Key: your-private-device-key" https://YOUR-VERCEL-DOMAIN.vercel.app/api/magtile
+```
+
+Each commit pushed to the connected Git repository can then trigger a deployment.
