@@ -92,6 +92,8 @@ function validateLayout(body) {
     const text = String(element.text ?? "").trim();
     const x = Number(element.x);
     const y = Number(element.y);
+    const width = Number(element.width ?? 0.8);
+    const height = Number(element.height ?? 0.2);
     const fontSize = Number(element.fontSize ?? 2);
 
     if (!text || text.length > 120) {
@@ -103,9 +105,17 @@ function validateLayout(body) {
       x < 0 ||
       x > 1 ||
       y < 0 ||
-      y > 1
+      y > 1 ||
+      !Number.isFinite(width) ||
+      width <= 0 ||
+      width > 1 ||
+      !Number.isFinite(height) ||
+      height <= 0 ||
+      height > 1 ||
+      x + width > 1 ||
+      y + height > 1
     ) {
-      throw new Error("Text positions must be normalized values between 0 and 1.");
+      throw new Error("Text boxes must fit inside the normalized canvas.");
     }
     if (!Number.isFinite(fontSize)) {
       throw new Error("fontSize must be a number.");
@@ -116,6 +126,8 @@ function validateLayout(body) {
       text,
       x,
       y,
+      width,
+      height,
       fontSize: Math.round(clamp(fontSize, 1, 4)),
     };
   });

@@ -13,119 +13,50 @@
       }
 
       * { box-sizing: border-box; }
-
-      body {
-        margin: 0;
-        min-height: 100vh;
-        background: radial-gradient(circle at top, #f7f7f1, #e5e5de 70%);
-      }
-
-      main {
-        width: min(1120px, calc(100% - 32px));
-        margin: 0 auto;
-        padding: 42px 0 64px;
-      }
-
-      header {
-        display: flex;
-        justify-content: space-between;
-        align-items: end;
-        gap: 24px;
-        margin-bottom: 28px;
-      }
-
+      body { margin: 0; min-height: 100vh; background: radial-gradient(circle at top, #f7f7f1, #e5e5de 70%); }
+      main { width: min(1120px, calc(100% - 32px)); margin: 0 auto; padding: 42px 0 64px; }
+      header { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 28px; }
       h1, h2, p { margin: 0; }
       h1 { font-size: clamp(2rem, 5vw, 4rem); letter-spacing: -0.07em; line-height: 0.95; }
       header p { color: #6e7067; margin-top: 10px; }
+      header a { color: #55574f; }
 
-      .workspace {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) 310px;
-        gap: 22px;
-        align-items: start;
-      }
-
-      .card {
-        background: rgba(255, 255, 251, 0.76);
-        border: 1px solid rgba(30, 31, 27, 0.12);
-        border-radius: 22px;
-        box-shadow: 0 18px 50px rgba(47, 48, 37, 0.08);
-      }
-
+      .workspace { display: grid; grid-template-columns: minmax(0, 1fr) 310px; gap: 22px; align-items: start; }
+      .card { background: rgba(255, 255, 251, 0.76); border: 1px solid rgba(30, 31, 27, 0.12); border-radius: 22px; box-shadow: 0 18px 50px rgba(47, 48, 37, 0.08); }
       .stage-card { min-height: 620px; display: grid; place-items: center; padding: 34px; }
+      .device-frame { width: min(100%, 560px); padding: 14px; border-radius: 20px; background: #30312c; box-shadow: 0 20px 40px rgba(31, 32, 28, 0.2); }
 
-      .device-frame {
-        width: min(100%, 560px);
-        padding: 14px;
-        border-radius: 20px;
-        background: #30312c;
-        box-shadow: 0 20px 40px rgba(31, 32, 28, 0.2);
-      }
-
-      #canvas {
-        position: relative;
-        width: 100%;
-        aspect-ratio: 416 / 240;
-        overflow: hidden;
-        background: white;
-        border: 2px solid #151613;
-        touch-action: none;
-      }
-
+      /* The editor has the same logical dimensions as the physical panel. */
+      #canvas { position: relative; width: 100%; aspect-ratio: 416 / 240; overflow: hidden; background: #fff; border: 2px solid #151613; touch-action: none; }
       #canvas.portrait { aspect-ratio: 240 / 416; width: min(100%, 360px); margin: 0 auto; }
-
-      .text-element {
-        position: absolute;
-        z-index: 1;
-        max-width: 90%;
-        padding: 2px 4px;
-        color: #111;
-        font-family: Arial, sans-serif;
-        line-height: 1.05;
-        white-space: pre-wrap;
-        overflow-wrap: anywhere;
-        cursor: grab;
-        user-select: none;
-        transform: translate(-4px, -1em);
-      }
-
-      .text-element.selected { outline: 1px dashed #5262d9; background: rgba(82, 98, 217, 0.08); }
+      .text-element { position: absolute; z-index: 1; overflow: hidden; color: #111; font-family: monospace; font-weight: 400; white-space: pre; overflow-wrap: normal; cursor: grab; user-select: none; border: 1px solid transparent; }
+      .text-element.selected { border: 1px dashed #5262d9; background: rgba(82, 98, 217, 0.08); }
       .text-element:active { cursor: grabbing; }
+      .resize-handle { display: none; position: absolute; right: -1px; bottom: -1px; width: 12px; height: 12px; background: #5262d9; border: 2px solid #fff; cursor: nwse-resize; }
+      .text-element.selected .resize-handle { display: block; }
 
       aside { padding: 24px; }
       aside h2 { font-size: 1.15rem; margin-bottom: 20px; letter-spacing: -0.03em; }
       label { display: block; color: #696b62; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; margin: 18px 0 8px; }
-      input, button { font: inherit; }
-      input[type="text"], input[type="password"] {
-        width: 100%;
-        border: 1px solid #cfd0c7;
-        border-radius: 10px;
-        padding: 11px 12px;
-        background: #fff;
-        color: #1f201c;
-      }
-
+      input, textarea, select, button { font: inherit; }
+      input[type="text"], input[type="password"], textarea, select { width: 100%; border: 1px solid #cfd0c7; border-radius: 10px; padding: 10px 12px; background: #fff; color: #1f201c; }
+      textarea { min-height: 64px; resize: vertical; }
       .row { display: flex; gap: 8px; }
-      .row input { min-width: 0; }
+      .row input, .row textarea, .row select { min-width: 0; }
       button { border: 0; border-radius: 10px; padding: 11px 13px; cursor: pointer; font-weight: 700; }
       button.primary { width: 100%; background: #20211d; color: white; }
       button.secondary { background: #e6e7df; color: #24251f; }
       button.danger { background: #f2dfdc; color: #8e302a; }
       button:disabled { opacity: 0.45; cursor: not-allowed; }
-
       .segmented { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 4px; background: #e6e7df; border-radius: 12px; }
       .segmented button { background: transparent; color: #696b62; padding: 9px; }
       .segmented button.active { background: #fff; color: #20211d; box-shadow: 0 2px 8px rgba(32, 33, 29, 0.1); }
       .hint { margin-top: 10px; color: #81837a; font-size: 0.82rem; line-height: 1.45; }
+      .selected-tools { padding-top: 2px; }
       #status { min-height: 2.5em; margin-top: 16px; color: #62645b; font-size: 0.84rem; line-height: 1.4; }
       #status.error { color: #9a342d; }
       #status.success { color: #35704d; }
-
-      @media (max-width: 820px) {
-        header { display: block; }
-        .workspace { grid-template-columns: 1fr; }
-        .stage-card { min-height: 0; padding: 24px; }
-      }
+      @media (max-width: 820px) { header { display: block; } .workspace { grid-template-columns: 1fr; } .stage-card { min-height: 0; padding: 24px; } }
     </style>
   </head>
   <body>
@@ -133,9 +64,9 @@
       <header>
         <div>
           <h1>MagTile<br />UI Designer</h1>
-          <p>Place simple text on the screen and publish it to your tile.</p>
+          <p>Design on the same logical pixel canvas used by the tile.</p>
         </div>
-        <a href="/" style="color:#55574f">Back to MagTile</a>
+        <a href="/">Back to MagTile</a>
       </header>
 
       <section class="workspace">
@@ -156,16 +87,29 @@
 
           <label for="text-input">Add text</label>
           <div class="row">
-            <input id="text-input" type="text" maxlength="120" placeholder="Write something..." />
+            <textarea id="text-input" maxlength="120" placeholder="Write something..."></textarea>
             <button id="add-text" type="button" class="secondary">Add</button>
+          </div>
+
+          <div id="selected-tools" class="selected-tools" hidden>
+            <label for="selected-text">Selected text</label>
+            <textarea id="selected-text" maxlength="120"></textarea>
+            <label for="font-size">Font size</label>
+            <select id="font-size">
+              <option value="1">1 — small</option>
+              <option value="2">2 — medium</option>
+              <option value="3">3 — large</option>
+              <option value="4">4 — extra large</option>
+            </select>
+            <p class="hint">Drag the box to move it. Drag the blue corner to resize it. Font sizes use the ESP32’s fixed pixel font.</p>
+            <button id="delete-text" type="button" class="danger" style="width:100%; margin-top:14px">Delete selected text</button>
           </div>
 
           <label for="key-input">MagTile key</label>
           <input id="key-input" type="password" autocomplete="off" placeholder="Your MagTileKey" />
-          <p class="hint">The key is only sent to your own API request and is kept in this browser for convenience.</p>
+          <p class="hint">The key is sent only to your own API and is kept in this browser for convenience.</p>
 
-          <button id="delete-text" type="button" class="danger" style="width:100%; margin-top:18px" disabled>Delete selected text</button>
-          <button id="save" type="button" class="primary" style="margin-top:10px">Save to MagTile</button>
+          <button id="save" type="button" class="primary" style="margin-top:18px">Save to MagTile</button>
           <p class="hint">The ESP32 checks for a new layout once per minute.</p>
           <p id="status" role="status"></p>
         </aside>
@@ -175,54 +119,107 @@
     <script>
       const canvas = document.querySelector("#canvas");
       const textInput = document.querySelector("#text-input");
+      const selectedTools = document.querySelector("#selected-tools");
+      const selectedText = document.querySelector("#selected-text");
+      const fontSizeInput = document.querySelector("#font-size");
       const keyInput = document.querySelector("#key-input");
       const status = document.querySelector("#status");
-      const deleteButton = document.querySelector("#delete-text");
       const saveButton = document.querySelector("#save");
       const addButton = document.querySelector("#add-text");
+      const deleteButton = document.querySelector("#delete-text");
       const orientationButtons = [...document.querySelectorAll("[data-orientation]")];
 
       let orientation = "landscape";
       let elements = [];
       let selectedId = null;
       let nextId = 1;
-      let drag = null;
+      let interaction = null;
+      let canvasScale = 1;
 
       keyInput.value = localStorage.getItem("magtile-key") || "";
+
+      function logicalSize() {
+        return orientation === "portrait" ? { width: 240, height: 416 } : { width: 416, height: 240 };
+      }
+
+      function clamp(value, min, max) { return Math.min(max, Math.max(min, value)); }
+      function selectedItem() { return elements.find((item) => item.id === selectedId) || null; }
 
       function setStatus(message, kind = "") {
         status.textContent = message;
         status.className = kind;
       }
 
-      function clamp(value, min, max) {
-        return Math.min(max, Math.max(min, value));
+      function updateCanvasScale() {
+        canvasScale = canvas.getBoundingClientRect().width / logicalSize().width;
       }
 
       function setOrientation(nextOrientation) {
-        orientation = nextOrientation;
+        orientation = nextOrientation === "portrait" ? "portrait" : "landscape";
         canvas.classList.toggle("portrait", orientation === "portrait");
-        orientationButtons.forEach((button) => {
-          button.classList.toggle("active", button.dataset.orientation === orientation);
-        });
+        orientationButtons.forEach((button) => button.classList.toggle("active", button.dataset.orientation === orientation));
+        updateCanvasScale();
         render();
       }
 
+      function wrapForDevice(text, maxChars, maxLines) {
+        const lines = [];
+        for (const paragraph of String(text).replace(/\r/g, "").split("\n")) {
+          if (!paragraph) {
+            lines.push("");
+            continue;
+          }
+          let remaining = paragraph;
+          while (remaining.length > maxChars) {
+            lines.push(remaining.slice(0, maxChars));
+            remaining = remaining.slice(maxChars);
+          }
+          lines.push(remaining);
+        }
+        return lines.slice(0, maxLines).join("\n");
+      }
+
       function render() {
+        updateCanvasScale();
         canvas.replaceChildren();
+        const { width: logicalWidth, height: logicalHeight } = logicalSize();
+
         elements.forEach((item) => {
           const node = document.createElement("div");
-          node.className = "text-element" + (item.id === selectedId ? " selected" : "");
-          node.textContent = item.text;
+          const selected = item.id === selectedId;
+          const pixelFontSize = 8 * item.fontSize;
+          const characterWidth = 6 * item.fontSize;
+          const boxWidth = Math.max(1, item.width * logicalWidth);
+          const boxHeight = Math.max(1, item.height * logicalHeight);
+          const maxChars = Math.max(1, Math.floor(boxWidth / characterWidth));
+          const maxLines = Math.max(1, Math.floor(boxHeight / pixelFontSize));
+
+          node.className = "text-element" + (selected ? " selected" : "");
+          node.textContent = wrapForDevice(item.text, maxChars, maxLines);
           node.style.left = `${item.x * 100}%`;
           node.style.top = `${item.y * 100}%`;
-          node.style.fontSize = `${item.fontSize}rem`;
+          node.style.width = `${item.width * 100}%`;
+          node.style.height = `${item.height * 100}%`;
+          node.style.fontSize = `${pixelFontSize * canvasScale}px`;
+          node.style.lineHeight = `${pixelFontSize * canvasScale}px`;
+          node.style.letterSpacing = `${(characterWidth - pixelFontSize * 0.6) * canvasScale}px`;
           node.dataset.id = item.id;
-          node.addEventListener("pointerdown", startDrag);
-          node.addEventListener("click", () => select(item.id));
+          node.addEventListener("pointerdown", startMove);
+
+          if (selected) {
+            const handle = document.createElement("span");
+            handle.className = "resize-handle";
+            handle.addEventListener("pointerdown", startResize);
+            node.appendChild(handle);
+          }
           canvas.appendChild(node);
         });
-        deleteButton.disabled = selectedId === null;
+
+        const item = selectedItem();
+        selectedTools.hidden = !item;
+        deleteButton.disabled = !item;
+        if (item && document.activeElement !== selectedText) selectedText.value = item.text;
+        if (item) fontSizeInput.value = String(item.fontSize);
       }
 
       function select(id) {
@@ -232,106 +229,109 @@
 
       function addText() {
         const text = textInput.value.trim();
-        if (!text) {
-          textInput.focus();
-          return;
-        }
-        const item = { id: nextId++, type: "text", text, x: 0.5, y: 0.5, fontSize: 2 };
+        if (!text) { textInput.focus(); return; }
+        const item = { id: nextId++, type: "text", text, x: 0.1, y: 0.1, width: 0.6, height: 0.2, fontSize: 2 };
         elements.push(item);
         selectedId = item.id;
         textInput.value = "";
         render();
-        setStatus("Text added. Drag it into position.");
+        setStatus("Text added. Move and resize the box.");
       }
 
-      function startDrag(event) {
+      function startMove(event) {
+        if (event.target.classList.contains("resize-handle")) return;
         event.preventDefault();
         event.stopPropagation();
         const id = Number(event.currentTarget.dataset.id);
-        selectedId = id;
         const item = elements.find((candidate) => candidate.id === id);
-        const bounds = canvas.getBoundingClientRect();
-        drag = { id, offsetX: event.clientX - bounds.left - item.x * bounds.width, offsetY: event.clientY - bounds.top - item.y * bounds.height };
-        event.currentTarget.setPointerCapture?.(event.pointerId);
+        if (!item) return;
+        selectedId = id;
+        interaction = { mode: "move", id, clientX: event.clientX, clientY: event.clientY, x: item.x, y: item.y };
+        render();
+      }
+
+      function startResize(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const id = Number(event.currentTarget.parentElement.dataset.id);
+        const item = elements.find((candidate) => candidate.id === id);
+        if (!item) return;
+        selectedId = id;
+        interaction = { mode: "resize", id, clientX: event.clientX, clientY: event.clientY, width: item.width, height: item.height };
         render();
       }
 
       document.addEventListener("pointermove", (event) => {
-        if (!drag) return;
-        const bounds = canvas.getBoundingClientRect();
-        const item = elements.find((candidate) => candidate.id === drag.id);
+        if (!interaction) return;
+        const item = elements.find((candidate) => candidate.id === interaction.id);
         if (!item) return;
-        item.x = clamp((event.clientX - bounds.left - drag.offsetX) / bounds.width, 0, 1);
-        item.y = clamp((event.clientY - bounds.top - drag.offsetY) / bounds.height, 0, 1);
+        const bounds = canvas.getBoundingClientRect();
+        const dx = (event.clientX - interaction.clientX) / bounds.width;
+        const dy = (event.clientY - interaction.clientY) / bounds.height;
+
+        if (interaction.mode === "move") {
+          item.x = clamp(interaction.x + dx, 0, 1 - item.width);
+          item.y = clamp(interaction.y + dy, 0, 1 - item.height);
+        } else {
+          item.width = clamp(interaction.width + dx, 0.04, 1 - item.x);
+          item.height = clamp(interaction.height + dy, 0.04, 1 - item.y);
+        }
         render();
       });
 
-      document.addEventListener("pointerup", () => { drag = null; });
-
+      document.addEventListener("pointerup", () => { interaction = null; });
+      canvas.addEventListener("pointerdown", (event) => { if (event.target === canvas) { selectedId = null; render(); } });
       addButton.addEventListener("click", addText);
-      textInput.addEventListener("keydown", (event) => { if (event.key === "Enter") addText(); });
-      deleteButton.addEventListener("click", () => {
-        elements = elements.filter((item) => item.id !== selectedId);
-        selectedId = null;
-        render();
-      });
+      textInput.addEventListener("keydown", (event) => { if (event.key === "Enter" && !event.shiftKey) { event.preventDefault(); addText(); } });
+      selectedText.addEventListener("input", () => { const item = selectedItem(); if (item) { item.text = selectedText.value; render(); } });
+      fontSizeInput.addEventListener("change", () => { const item = selectedItem(); if (item) { item.fontSize = Number(fontSizeInput.value); render(); } });
+      deleteButton.addEventListener("click", () => { elements = elements.filter((item) => item.id !== selectedId); selectedId = null; render(); });
       orientationButtons.forEach((button) => button.addEventListener("click", () => setOrientation(button.dataset.orientation)));
+      new ResizeObserver(render).observe(canvas);
 
       function authHeaders(includeContentType = false) {
-        const key = keyInput.value.trim();
-        const headers = { "X-MagTile-Key": key };
+        const headers = { "X-MagTile-Key": keyInput.value.trim() };
         if (includeContentType) headers["Content-Type"] = "application/json";
         return headers;
       }
 
+      function normalizeLoadedElement(item) {
+        return {
+          id: nextId++, type: "text", text: String(item.text || ""),
+          x: clamp(Number(item.x) || 0, 0, 1), y: clamp(Number(item.y) || 0, 0, 1),
+          width: clamp(Number(item.width) || 0.8, 0.04, 1), height: clamp(Number(item.height) || 0.2, 0.04, 1),
+          fontSize: clamp(Math.round(Number(item.fontSize) || 2), 1, 4),
+        };
+      }
+
       async function loadLayout() {
-        if (!keyInput.value.trim()) {
-          setStatus("Enter your MagTileKey to load the current layout.");
-          return;
-        }
+        if (!keyInput.value.trim()) { setStatus("Enter your MagTileKey to load the current layout."); return; }
         setStatus("Loading current layout...");
         try {
           const response = await fetch("/api/magtile", { headers: authHeaders() });
           const data = await response.json();
           if (!response.ok) throw new Error(data.error || `Request failed (${response.status})`);
           orientation = data.orientation === "portrait" ? "portrait" : "landscape";
-          elements = (data.elements || []).map((item) => ({ ...item, id: nextId++ }));
+          elements = (data.elements || []).map(normalizeLoadedElement);
           setOrientation(orientation);
           setStatus("Current layout loaded.", "success");
-        } catch (error) {
-          setStatus(error.message, "error");
-        }
+        } catch (error) { setStatus(error.message, "error"); }
       }
 
       saveButton.addEventListener("click", async () => {
         const key = keyInput.value.trim();
-        if (!key) {
-          setStatus("Enter your MagTileKey before saving.", "error");
-          keyInput.focus();
-          return;
-        }
+        if (!key) { setStatus("Enter your MagTileKey before saving.", "error"); keyInput.focus(); return; }
         localStorage.setItem("magtile-key", key);
         saveButton.disabled = true;
         setStatus("Saving layout...");
         try {
-          const payload = {
-            version: 1,
-            orientation,
-            elements: elements.map(({ id, ...item }) => item),
-          };
-          const response = await fetch("/api/magtile", {
-            method: "POST",
-            headers: authHeaders(true),
-            body: JSON.stringify(payload),
-          });
+          const payload = { version: 1, orientation, elements: elements.map(({ id, ...item }) => item) };
+          const response = await fetch("/api/magtile", { method: "POST", headers: authHeaders(true), body: JSON.stringify(payload) });
           const data = await response.json();
           if (!response.ok) throw new Error(data.error || `Request failed (${response.status})`);
-          setStatus(`Saved at ${new Date(data.updatedAt).toLocaleTimeString()}. The tile will pick it up within a minute.`, "success");
-        } catch (error) {
-          setStatus(error.message, "error");
-        } finally {
-          saveButton.disabled = false;
-        }
+          setStatus(`Saved at ${new Date(data.updatedAt).toLocaleTimeString()}. The tile will update within a minute.`, "success");
+        } catch (error) { setStatus(error.message, "error"); }
+        finally { saveButton.disabled = false; }
       });
 
       keyInput.addEventListener("change", loadLayout);
