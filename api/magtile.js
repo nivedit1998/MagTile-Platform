@@ -64,6 +64,19 @@ function clamp(value, minimum, maximum) {
   return Math.min(maximum, Math.max(minimum, value));
 }
 
+function normalizeFontSize(value) {
+  const requested = Number(value);
+  const legacySizes = { 1: 12, 2: 24, 3: 48, 4: 48 };
+  if (legacySizes[requested]) return legacySizes[requested];
+
+  const supportedSizes = [6, 12, 24, 48];
+  return supportedSizes.reduce((closest, candidate) =>
+    Math.abs(candidate - requested) < Math.abs(closest - requested)
+      ? candidate
+      : closest
+  , 12);
+}
+
 function validateLayout(body) {
   if (!body || typeof body !== "object" || Array.isArray(body)) {
     throw new Error("The request body must be a layout object.");
@@ -94,7 +107,7 @@ function validateLayout(body) {
     const y = Number(element.y);
     const width = Number(element.width ?? 0.8);
     const height = Number(element.height ?? 0.2);
-    const fontSize = Number(element.fontSize ?? 2);
+    const fontSize = normalizeFontSize(element.fontSize ?? 12);
 
     if (!text || text.length > 120) {
       throw new Error("Text must contain between 1 and 120 characters.");
@@ -117,10 +130,6 @@ function validateLayout(body) {
     ) {
       throw new Error("Text boxes must fit inside the normalized canvas.");
     }
-    if (!Number.isFinite(fontSize)) {
-      throw new Error("fontSize must be a number.");
-    }
-
     return {
       type: "text",
       text,
@@ -128,7 +137,7 @@ function validateLayout(body) {
       y,
       width,
       height,
-      fontSize: Math.round(clamp(fontSize, 1, 4)),
+      fontSize,
     };
   });
 
