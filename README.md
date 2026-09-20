@@ -6,7 +6,7 @@ The lightweight Vercel platform for MagTile.
 
 Open `/designer.html` on the deployed site. Enter the same private key used by the ESP32, choose portrait or landscape, add text, drag it into position, and select **Save to MagTile**.
 
-The ESP32 polls `/api/magtile` every minute. The saved layout is returned as JSON using normalized `x`, `y`, `width`, and `height` values, so the editor and device share the same logical 416×240 landscape or 240×416 portrait canvas. Text uses the ESP32's fixed font sizes 1–4 and wraps inside its saved box.
+The ESP32 polls `/api/magtile` every minute. The saved layout is returned as JSON using normalized `x`, `y`, `width`, and `height` values, so the editor and device share the same logical 416×240 landscape or 240×416 portrait canvas. Text uses the same `FreeSansBold12pt7b` font on the editor and ESP32, with scale sizes 1–4, and wraps inside its saved box.
 
 ## Vercel environment variables
 
